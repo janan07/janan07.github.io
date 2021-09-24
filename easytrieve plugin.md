@@ -1,18 +1,44 @@
 # Easytrieve Language Support Plugin
 
- The Easytrieve Language Support plugin adds features and functionalites to Visual Studio Code which can help with editing and executing Easytrieve code both locally as well as when using Zowe on mainframe.   
+Easytrieve Language Support enhances the Easytrieve programming experience on your integrated Development Environment (IDE). The extension leverages the language server protocol to provide autocomplete, syntax highlighting and coloring, and diagnostic features for Easytrieve code and macros. The Easytrieve Language Support extension can also connect to a mainframe using a Zowe CLI z/OSMF profile to automatically retrieve macros used in your programs and store them in your PC.
 
- _Here we should make a statement about the benefits of using the plugin compared to just using Easytrieve directly._
- 
+Easytrieve Language Support recognizes files with the extension `.ezt` as Easytrieve files.
+
+**Note:** Currently, the Easytrieve Langauage Support plug-in works only on Windows 10. For full functionality, other tools or plugins may be needed.
+
+Other tools which can work in combination with the plug-in include the following:
+
+- Zowe CLI
+- Zowe Explorer
+- JCL Language support
+- DB2 (client, connect, server)
+- Oracle (client, server)
+- Easytrieve for Windows
  ## Table of Contents
 
-* Summary
-* Dependencies
-* Basic Options
-* Further Options
+_Question: Is Configuring and Basic Settings the same? If so, we should remove basic Settings and keep all of this under Configuring._
+
+
+* Introduction
+* Plug-in Features
 * Installing
-* Configuring
-  * Configuring the plugin
+* Plugin Settings
+  * General settings
+    * Zowe profile
+    * Options Table
+    * Macros
+    * eztsql
+  * JCL Generate Settings
+    * Jobcard
+    * Cbaaload
+    * Ezoptbl
+    * Jobparm
+    * Eztdsn
+  * Other settings
+    * Db_Name_Override
+    * Env
+* Configuring 
+  * Configuring the plug-in
     * Option Table Setup
     * Macro Location Setup
     * Create a Zowe Profile
@@ -22,81 +48,104 @@
   * Configuring the plugin for Windows
 * Using
   * Use-case Scenarios
+## Introduction
  
- ## Summary 
- * **LSP**
+The Easytrieve Language Support plugin provides a subset of LSP (Language Server Protocol) functions including source code validation, the hover feature, Go To definition, Autocompletion, Options table editing, Local build-and-run task, Mainframe communication tools, Easytrieve build-and-run, and other LSP features. 
+
+The Language Support Plugin provides a streamline way to select a wide range of basic Easytrieve Report Generator settings including the Options Table, Macros, eztsql, and Zowe Profiles. 
  
-     The Easytrieve Language Support plugin provides the following subset of LSP (Language Server Protocol) functions:
+For more information about basic settings, see [Basic Settings](#basic-settings). 
 
-     * **Source code validation**
+There are also numerous additional settings that can be applied including JCL Generate Options as well as various other options.
 
-       _Add detail to definition_
+For more information about additional settings, see [Additional Settings](#additional-settings).
 
-       Error and warning messages from a modified Easytrieve compiler are the same as when the source code is compiled under the same conditions (options table, database connection, etc.) 
+## Plug-in features
 
-     * **Hover**
+The Easytrieve Language Support plugin provides the following subset of LSP (Language Server Protocol) functions:
 
-       The hover functionality provides additional information to symbols (fields and filenames). Use the hover function by placing the cursor over the field name or file name. Information may be limited if the symbol is not defined in the edited file (i.e. symbol is defined in a macro).
+* **Source code validation**
+
+  _Add detail to definition_
+
+  Error and warning messages from a modified Easytrieve compiler are the same as when the source code is compiled under the same conditions (options table, database connection, etc.) 
+
+* **Hover**
+
+  The hover functionality provides additional information to symbols (fields and filenames). Use the hover function by placing the cursor over the field name or file name. Information may be limited if the symbol is not defined in the edited file (i.e. symbol is defined in a macro).
      
-     * **Go to definition**
+* **Go to definition**
 
-       This feature makes it possible to jump to a specific location where a symbol (field or filename) is defined. This function is limited to a currently edited file. This feature is not available for symbols defined in a macro.
+  The `Go to definition` feature makes it possible to jump to a specific location where a symbol (field or filename) is defined. This function is limited to a currently edited file. This feature is not available for symbols defined in a macro.
 
-     * **Autocompletion** (in a specific context)
+* **Autocompletion** (context-specific)
 
-       Autocompletion can be used when a collon `:` is used after a filename. Enter **ctrl** + **space** to see a list of all fields defined for the file. _(Describe the limitations of this feature)_
- * **Options table editing**
-    - LSP: only error checking available
- * **Local build and run task**
+  Autocompletion can be used when a collon `:` is used after a filename. Enter **ctrl** + **space** to see a list of all fields defined for the file. _(Describe the limitations of this feature)_
 
-   _Add definition_
+* **Options table editing**
+
+   _Is the error checking the only options table editing feature to be listed here?_
+
+  - Error checking of the options table is available.
+
+* **Local build and run task**
+
+  When using the Windows version of Easytrieve, the code created using the plug-in can be executed on a local PC and the output can be viewed using VScode.
    
- * **Mainframe communication tools**
+* **Mainframe communication tools**
 
-   _Add definition_
+  Mainframe communication tools make it possible to execute an Easytrieve program on the mainframe. The created Eastrieve program can be uploaded to the mainframe by using the **Upload EZT to mainframes** feature. The dataset reference is subsequently used in the generated JCL.
 
 * **Easytrieve build-and-run**
 
-   _Add definition_
+  _Add definition_
 
-* **Other basic plugin functionalities**
+* **Generate JCL**
 
-   Basic functionalities of the plugin include syntax coloring. _deleted part is decribed above_
-## Dependencies
-Currently, this plugin works only on Windows 10. For full functionality, other tools or plugins may be needed:
+  The **generate JCL** feature and Zowe explorer make it possible to executed an Easytrieve program on the mainframe.
 
-_Perhaps we should describe when/how these tools are useful for full functionality_
+* **Syntax colouring**
 
-- Zowe CLI
-- Zowe Explorer
-- JCL Language support
-- DB2 (client, connect, server)
-- Oracle (client, server)
-- Easytrieve for Windows
+  An Easytrieve program developed using this plug-in is syntax coloured. The coloring schema uses VScode standards.
 
-## Basic Settings
+## Installing 
 
-Basic options available with the plugin include the following categories:
+Installation of the plugin is via the VSCode marketplace. For more information about installation from the VS Code marketplace, see [Extension Marketplace](#https://code.visualstudio.com/docs/editor/extension-marketplace). Following installation, basic plug-in functionality is available. For full functionality, other tools or plug-ins may be required. 
+
+_Does it make sense to list the Plugin settings here, or should we continue with Configuring? Are the Plugin Settings and Configuring synonymous?_
+
+## Plugin Settings
+
+### General settings
+
+The following general settings can be customized according to user specifications:
+
+* **zoweProfile** 
+
+  _Why is the heading zoweProfile if there are two profiles which need to be specified (zOSMF profile and zowe profile)?_
+
+  Specify the following profiles:
+  
+  * **zOSMF profile**
+  
+    This profile is used for mainframes execution (JCL generate, Easytrieve program upload) 
+
+  * **zowe profile**
+  
+    This profile is the default profile. To use the default profile, leave this field empty.  
+    
+  For more information, see [Zowe Explorer Profiles](https://docs.zowe.org/stable/user-guide/ze-profiles/).
+
+- _What is the field that should be specified for this setting?_
+
+  Specify if you want VSCode to communicate with the mainframe (e.g. downloading macros, uploading generated JCLs) 
+
+  
+  For more information, see [Creating a zosmf profile](https://docs.zowe.org/stable/getting-started/cli-getting-started/#creating-a-zosmf-profile).
 
 * **Options Table**
 
-  _add description of Options Table_
-
-* **Macros**
-
-  _add description of Macros_
-
-* **eztsql**
-
-  _add description of eztsql_
-
-* **zoweProfile**
-
-  _add description of zoweProfile_
-
-**Options Table**
-
-_Are the following notes to the user who is filling in the fields? If so, can we describe the procedure?_
+  _Are the following notes to the user who is filling in the fields? If so, can we describe the procedure?_
 
   - Use the path to the file containing the options table definitions in text format. Use the `.def` extension.
   - Use the same format as is used as input for `etopload`. (**_link to EZT Techdocs_**)
@@ -105,12 +154,11 @@ _Are the following notes to the user who is filling in the fields? If so, can we
   - The relative path is evaluted against first root of the workspace
   - Ensure that you update whenever other values other than default values are applied in the options table for validating and parsing the code by the language server (plugin)
 
-For more information, see [Create or Modify an Options Table](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/ca-easytrieve-report-generator/11-6/using/workbench/configuration-manager/create-or-modify-an-options-table.html) in the Easytrieve documentation.
+    For more information, see [Create or Modify an Options Table](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/ca-easytrieve-report-generator/11-6/using/workbench/configuration-manager/create-or-modify-an-options-table.html) in the Easytrieve documentation.
 
-**Macros**
+* **Macros**
 
-
-_Is this what is presented in the UI, or is this a direction to the user who is filling in the Macros field? If so, can we describe this as a procedure?_
+  _Is this what is presented in the UI, or is this a direction to the user who is filling in the Macros field? If so, can we describe this as a procedure?_
 
   - List of directories (absolute path) or DSN with macros seperated by semicolon
   - default: empty
@@ -121,20 +169,17 @@ _Is this what is presented in the UI, or is this a direction to the user who is 
 
   - Specify the list locations of the macros, which are used in the Easytrieve code.
   
-  For more information, see macro directories in the Easytrieve documentation. (**_Add link_**)
+    For more information, see macro directories in the Easytrieve documentation. (**_Add link_**)
 
-  **_Please specify which link is suitable:_**
-  * [Macro Statement](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/ca-easytrieve-report-generator/11-6/language-reference/statements/macro-statement.html)
-  * [Define Macros](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/ca-easytrieve-report-generator/11-6/programming/macro-facility/define-macros.html)
-  
+    **_Please specify which link is suitable:_**
+    * [Macro Statement](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/ca-easytrieve-report-generator/11-6/language-reference/statements/macro-statement.html)
+    * [Define Macros](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/ca-easytrieve-report-generator/11-6/programming/macro-facility/define-macros.html)
 
- 
+* **eztsql** 
 
-**eztsql** 
+  **_Is this a direction to the user? If so, can we describe this as a procedure?_**
 
-**_Is this a direction to the user? If so, can we describe this as a procedure?_**
-
- **_Is this the same as Setting Environment Variables?_**
+  **_Is this the same as Setting Environment Variables?_**
 
   - The same as EZTSQL environment variable in Easytrieve itself (**_link to EZT Techdocs_**)
   - This value controls the type of database connection (EZTSQL)
@@ -146,75 +191,77 @@ _Is this what is presented in the UI, or is this a direction to the user who is 
   - After changing this value, it is necessary to  restart the language server by restarting VSCode.  
   - Specify if your scripts are using database. This specification ensures that the database connection is used during validating and parsing of the Easytrive code.
 
-**zoweProfile**
+* **JCL generate settings**
 
-  - Specify the zowe profile. To use the default profile, leave this field empty (default).  
-    
-    For more information, see [Zowe Explorer Profiles](https://docs.zowe.org/stable/user-guide/ze-profiles/).
+  The JCL generate feature of the plugin enables the user to create JCLs required to execute the Easytrieve program on the mainframes. These JCLs are created in accordance with the settings done on the VScode plugin settings.
 
-  - Specify if you want VSCode to communicate with the mainframe (e.g. downloading macros, uploading generated JCLs)
+  The following options apply to the JCL generate functionality. To generate a JCL for the Easytrive code, specify the following:
+
+  * **jobcard**
+
+    A freeflow Jobcard field for the Easytrieve execution JCL. This could be any freeflow jobcard as specified y the programmer.
+
+    ` //JOB01EZT JOB (123456789),'EZTPRGMR'` is the default setting.
+
+    This jobcard will inserted in the beginning of the generated JCL
+
+  * **cbaaload**
+
+    The step libraries which are to be used in the JCL generation are to be specified here. Multiple libraries must be delimited by Semicolons.
+
+    The libraries specified here would be used in the options table creation step as well as the Easytrieve compile and go step of the generated JCL.
+
+  * **ezoptbl**
+
+    Options table for the generated JCL for Easytrieve execution.
+    A valid pre-created/compiled options table needs to be specified here. 
+
+    * When `ezoptbl` is present, the `JCL generate` feature  generates only a compile and go step of the Easytrieve.
   
-    For more information, see [Creating a zosmf profile](https://docs.zowe.org/stable/getting-started/cli-getting-started/#creating-a-zosmf-profile).
+    * When `ezoptbl` is not present, the`JCL generate` feature also adds an options file creation step to the generated JCL.
 
-## Further Options Available
+    The options for this step are recovered from the Windows options file if `ezoptbl` is present. Otherwise, the Easytrieve default options are used.
 
-**JCL generate options**
-**_dicuss this with Saran_**
+  * **jobparm**
 
-The following options apply to the JCL generate functionality. To generate a JCL for the Easytrive code, specify the following:
+    Jobparm for the Easytrieve execution JCL (e.g. /*JOBPARM SYSAF=*)
+    The default is set to empty
 
-  * jobcard
-  * cbaaload
-  * ezoptbl 
+  * **eztdsn**
 
-- jobcard
-  - VSCode description: Jobcard for the Easytrieve execution JCL
-  - default "//JOB01EZT JOB (123456789),'EZTPRGMR'"
-  - this jobcard will inserted in the beginning of the generated JCL
-- cbaaload
-  - VSCode description:  Libraries for steplib delimited by semicolon
-  - default: "\*\*.CBAALOAD;\*\*.LOADLIB"
-- ezoptbl
-  - VSCode description: Options table for Easytrieve
-  - default: "\*\*.EZOPTBL"
-  - location of compiled options table on mainframe
-- jobparm
-  - VSCode description: Jobparm for the Easytrieve execution JCL (e.g. /*JOBPARM SYSAF=*)
-  - default: empty
-  - optional
-- eztdsn
-  - VSCode description:  DSN for the EZT programs to be uploaded to
-  - default: empty
-  - specify if you want to upload Easytrieve code to separate mainframe dataset instead of inlineing it into JCL
-- jcldsn
-  - VSCode description: DSN for the generated JCL to be uploaded to
-  - default: empty
-  - specify if you want to upload generated JCL to mainframe from VSCode
+    DSN for the Easytrieve programs(*.EZT files) to be uploaded to.
 
-**Other options**
+    The default is set to empty.
+  
+    Specify if you want to upload Easytrieve code to separate mainframe dataset and refer the dataset to the generated JCL. In it's absence, the Easytrieve program would be placed in-line with the generated JCL.
 
-- Db_Name_Override
-  - VSCode description: ODBC Datasource name or Database name for SSID PARM Override
-  - default: empty
-  - overrides the database name (e.g. SSID) specified in the source code useful when the local database (usded by the language server) name differs from the one used on the target system (used during execution)
-  - after changing this value, the language server has to restarted, this means to restart VSCode (note: plan is to remove this requirement)
+  * **jcldsn**
 
-**_probably to be removed_**
+    DSN for the generated JCL(generated *.JCL files) to be uploaded to
 
-- env: 
-  - type: object
-  - VSCode description:  addtional environment variables
-  - this can be used to set any other needed environment variable
-  - this has to be edited directly in JSON, because the type is JSON object
-  - this option will be probably removed in the future, maybe even before release
+    The default is set to empty.
 
-## Installing 
-The plugin can be installed from the VSCode market. For more information about installation from the VS Code marketplace, see [Extension Marketplace](#https://code.visualstudio.com/docs/editor/extension-marketplace). Right after installation the basic functionality is available. For full functionlity  other tools or plugins may be needed to install and cofigure.
+    Specify if you want to upload generated JCL to mainframe from VSCode
 
+### Other settings
+
+  * **Db_Name_Override**
+
+    ODBC Datasource name or Database name for SSID PARM Override overrides the database name (e.g. SSID) specified in the source code useful when the local database (usded by the language server) name differs from the one used on the target system (used during execution).
+
+    After changing this value, the language server requires restart of VS Code.
+
+    The default of this setting is empty.
+
+  * **env**
+
+    This setting can be used to set any other needed environment variable. 
+    
+    It is necessary to edit this setting directly in the JSON as the type is a JSON object.
 
 ## Configuring
+### Configuring the plug-in
 
-### Configuring the plugin
 Use the following procedure to set up the Options table file with the VS Code plugin. You can specify where the options are stored as an input for the compiler. 
 
 _Perhaps we should add an example of how to specify where an option can be stored here._
@@ -278,12 +325,61 @@ _Describe how to set up the database and add link to database setup in Techdocs 
 
 ### Configuring JCL Generate Options
 
-- job card
-- job parm
+Follow these steps to configure JCL generate options:
+
+1. Specify the following options:
+
+   * `Cbaaload` 
+     
+      Step libraries for Options table creation and Easytrieve execution)
+   * `Ezoptbl`
+
+      An existing options table dataset residing on the mainframes
+      
+   * `Eztdsn` 
+   
+      An existing dataset to upload the created Easytrieve programs to
+      
+   * `Jcldsn`
+   
+      An existing dataset to upload the generated JCL to
+      
+   * `Jobcard`
+   
+      A freeflow jobcard which is to be used in the generated JCL
+      
+   * `Jobparm`
+   
+      Jobparm to be used in the generated JCL
+
+2. Define the Input and Output files required for the execution of the Eadytrieve program. The IO files in the JCL format could either be specifed in the `<Easytrieve_program_name>.dsn` file within the workspace (or) in the user prompt which is displayed after the "generate JCL" contexual option which appeard on the right-click on the `*.ezt` file display.
+
+   **Example:**
+   
+    For the Easytrieve program `employee.ezt`, the input file **salary** is to be specified as in the `employee.dsn` file.
+
+   ```
+   //SALARY    DD DSN=SITEID.DATE.SALARY,DISP=SHR
+   ```
+   Comments such as `//*THIS IS JUST A COMMENT` or other DD statements could also be added to the `<Easytrieve_program_name>.dsn` file.
+
+   The common DD statements which are to be added to every generated JCL on the workspace are mentioned in the default.dsn file within the workspace.
+
+   Comments such as `//*THIS IS JUST A COMMENT` or other DD statements could also be added to the `default.dsn` file.
+
+### Upload EZT to mainframes
+
+After generating the JCL, if the `Eztdsn` setting is specified with a valid dataset name, it is necessary to upload the Easytrieve program to the mainframe. 
+
+In this case, the dataset name is referenced in the generated JCL and would be invalid if the program member does not reside in the specified dataset name. 
+
+_What is invalid in this previous statement?_
+
+If a dataset name is specified in the `Jcldsn` setting, the generated JCL is uploaded to the mainframe.
 
 ### Configuring plug-in for Windows (Optional)
 
-- add link 
+- _add link_
 
 ## Using the Plugin
 
@@ -292,4 +388,3 @@ The plug-in is activated by opening a file with `.ezt` extension, or can be acti
 ### Use Scenarios
 
 _Add scenarios for using the plugin_
-
